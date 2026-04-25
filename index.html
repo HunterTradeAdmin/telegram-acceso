@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Acceso a Hunter Trade</title>
+    <title>Acceso Hunter Trade Academy</title>
     <style>
         body {
             background-color: #0d1117; 
@@ -18,87 +18,71 @@
             text-align: center;
             padding: 20px;
         }
-        h2 { margin-bottom: 10px; font-size: 1.5rem; }
-        p { color: #8b949e; margin-bottom: 30px; font-size: 1rem; }
-        
-        /* Diseño de botón estilo Trading/Academia */
-        .btn {
-            background-color: #24A1DE; /* Azul Telegram */
-            color: white;
-            padding: 16px 32px;
-            border-radius: 8px;
-            text-decoration: none;
-            font-size: 1.2rem;
-            font-weight: bold;
-            box-shadow: 0 4px 15px rgba(36, 161, 222, 0.4);
-            transition: transform 0.1s;
+        .warning-box {
+            background-color: #161b22;
+            border: 1px solid #30363d;
+            border-radius: 10px;
+            padding: 25px;
+            max-width: 400px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.5);
         }
-        .btn:active { transform: scale(0.95); }
-        .btn.whatsapp { background-color: #25D366; box-shadow: 0 4px 15px rgba(37, 211, 102, 0.4); }
+        h2 { color: #58a6ff; margin-top: 0; }
+        .instructions {
+            background-color: #21262d;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+            font-size: 1.1rem;
+            text-align: left;
+            line-height: 1.6;
+        }
+        .highlight { color: #ff7b72; font-weight: bold; }
+        .btn {
+            display: inline-block;
+            background-color: #24A1DE;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: bold;
+            margin-top: 10px;
+        }
     </style>
 </head>
 <body>
 
-    <h2>Conectando de forma segura...</h2>
-    <p>TikTok bloquea la apertura automática. <br><b>Toca el botón abajo para continuar:</b></p>
-    
-    <a href="#" id="action-btn" class="btn">Cargando...</a>
+    <div class="warning-box">
+        <h2>⚠️ Estás en el navegador de TikTok</h2>
+        <p>TikTok bloquea el acceso a Telegram. Para entrar a nuestros canales de <b>Hunter Trade</b>, sigue estos pasos:</p>
+        
+        <div class="instructions">
+            1. Toca los <span class="highlight">3 puntos (•••)</span> en la esquina superior derecha.<br><br>
+            2. Selecciona <span class="highlight">"Abrir en el navegador"</span> o "Abrir en Chrome/Safari".
+        </div>
+
+        <p style="font-size: 0.9rem; color: #8b949e;">Una vez en tu navegador normal, Telegram se abrirá automáticamente.</p>
+        
+        <a href="#" id="action-btn" class="btn">Toca aquí si ya saliste de TikTok</a>
+    </div>
 
     <script>
-        // 1. Obtener parámetros de la URL (?c=1, ?c=2, etc)
         const urlParams = new URLSearchParams(window.location.search);
         const canal = urlParams.get('c');
         
-        // 2. Detectar si el usuario usa Android o iPhone
-        var userAgent = navigator.userAgent || navigator.vendor || window.opera;
-        var isAndroid = /android/i.test(userAgent);
+        let finalUrl = "https://t.me/HunterSpikeSystem";
         
-        // Variables
-        let tgDomain = "HunterSpikeSystem"; // Por defecto canal 1
-        let wappPhone = "573026768554";
-        let isWapp = false;
-        let directLink = "";
-
-        // Lógica de ruteo
         if (canal === "2") {
-            tgDomain = "HunterSpike_Bot";
+            finalUrl = "https://t.me/HunterSpike_Bot";
         } else if (canal === "3") {
-            isWapp = true;
+            finalUrl = "https://wa.me/573026768554";
+            document.getElementById('action-btn').style.backgroundColor = "#25D366";
+            document.getElementById('action-btn').innerText = "Abrir WhatsApp";
         }
 
-        // 3. Generar el enlace "rompe-bloqueos"
-        if (isWapp) {
-            // Configuración para WhatsApp
-            document.getElementById('action-btn').innerText = "ABRIR WHATSAPP";
-            document.getElementById('action-btn').classList.add('whatsapp');
-            
-            if (isAndroid) {
-                // Intent exclusivo para Android (Fuerza apertura)
-                directLink = "intent://send?phone=" + wappPhone + "#Intent;package=com.whatsapp;scheme=whatsapp;end";
-            } else {
-                // iPhone / Web
-                directLink = "whatsapp://send?phone=" + wappPhone;
-            }
-        } else {
-            // Configuración para Telegram
-            document.getElementById('action-btn').innerText = "ABRIR TELEGRAM";
-            
-            if (isAndroid) {
-                // Intent exclusivo para Android (Fuerza apertura y burla a TikTok)
-                directLink = "intent://resolve?domain=" + tgDomain + "#Intent;package=org.telegram.messenger;scheme=tg;end";
-            } else {
-                // iPhone / Web
-                directLink = "tg://resolve?domain=" + tgDomain;
-            }
-        }
+        document.getElementById('action-btn').href = finalUrl;
 
-        // Asignar el enlace al botón manual
-        document.getElementById('action-btn').href = directLink;
-
-        // 4. Intentar forzarlo automáticamente en un tiempo muy corto
-        setTimeout(function() {
-            window.location.href = directLink;
-        }, 300);
+        // Intentamos abrir de todos modos por si el navegador lo permite
+        setTimeout(() => { window.location.href = finalUrl; }, 800);
     </script>
 
 </body>
