@@ -3,40 +3,48 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Redirigiendo a Telegram...</title>
+    <title>Redirigiendo...</title>
     <script>
-        // 1. Capturamos el parámetro "c" de la URL
         const urlParams = new URLSearchParams(window.location.search);
         const canal = urlParams.get('c');
         
-        // 2. Definimos una variable vacía para el usuario final
-        let telegramUser = "";
+        let finalUrl = "";
+        let directProtocol = "";
 
-        // 3. Asignamos el nombre de usuario de Telegram según el número del parámetro
+        // Configuración de rutas según el parámetro ?c=
         if (canal === "1") {
-            telegramUser = "HunterSpikeSystem"; // Reemplaza con el usuario sin el @
+            // Canal Principal
+            finalUrl = "https://t.me/HunterSpikeSystem";
+            directProtocol = "tg://resolve?domain=HunterSpikeSystem";
         } else if (canal === "2") {
-            telegramUser = "HunterSpike_Bot";       // Reemplaza con el usuario sin el @
+            // Segundo Canal / Bot
+            finalUrl = "https://t.me/HunterSpike_Bot";
+            directProtocol = "tg://resolve?domain=HunterSpike_Bot";
         } else if (canal === "3") {
-            telegramUser = "TuCanalLowTicket"; // Reemplaza con el usuario sin el @
+            // WhatsApp Directo
+            finalUrl = "https://wa.me/573026768554";
+            directProtocol = "https://api.whatsapp.com/send?phone=573026768554";
         } else {
-            telegramUser = "TuCanalPrincipal"; // Canal por defecto por si alguien entra sin el parámetro
+            // Por defecto: Canal Principal
+            finalUrl = "https://t.me/HunterSpikeSystem";
+            directProtocol = "tg://resolve?domain=HunterSpikeSystem";
         }
 
-        // === LÓGICA DE REDIRECCIÓN ===
+        // Intento de apertura directa
         setTimeout(function() {
-            window.location.href = "tg://resolve?domain=" + telegramUser;
+            window.location.href = directProtocol;
         }, 500);
 
+        // Redirección de respaldo (en caso de que no abra la app)
         setTimeout(function() {
-            window.location.href = "https://t.me/" + telegramUser;
+            window.location.href = finalUrl;
         }, 2500);
     </script>
     <style>
         body {
-            background-color: #0f0f0f;
-            color: #ffffff;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #0d1117; /* Fondo oscuro estilo GitHub/Trading */
+            color: #c9d1d9;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -45,30 +53,25 @@
             margin: 0;
         }
         .loader {
-            border: 4px solid #333;
-            border-top: 4px solid #0088cc;
+            border: 3px solid #21262d;
+            border-top: 3px solid #0088cc;
             border-radius: 50%;
-            width: 50px;
-            height: 50px;
-            animation: spin 1s linear infinite;
+            width: 40px;
+            height: 40px;
+            animation: spin 0.8s linear infinite;
             margin-bottom: 20px;
         }
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-        a { color: #0088cc; text-decoration: none; font-weight: bold; font-size: 1.1em; }
-        a:hover { text-decoration: underline; }
-        p { color: #aaaaaa; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        h2 { font-weight: 400; font-size: 1.2rem; }
+        a { color: #58a6ff; text-decoration: none; margin-top: 10px; font-size: 0.9rem; }
     </style>
 </head>
 <body>
     <div class="loader"></div>
-    <h2>Abriendo Telegram...</h2>
-    <p>Si no te redirige automáticamente, <a href="#" id="manual-link">haz clic aquí</a>.</p>
-    
+    <h2>Abriendo aplicación...</h2>
+    <p>Si no sucede nada, <a href="#" id="manual-link">toca aquí para entrar</a>.</p>
     <script>
-        document.getElementById('manual-link').href = "tg://resolve?domain=" + telegramUser;
+        document.getElementById('manual-link').href = directProtocol;
     </script>
 </body>
 </html>
